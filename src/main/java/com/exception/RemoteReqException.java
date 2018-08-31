@@ -1,4 +1,4 @@
-package com.excep;
+package com.exception;
 
 /**
  * Created by work on 2018/8/22.

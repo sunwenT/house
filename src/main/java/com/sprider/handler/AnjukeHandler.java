@@ -1,8 +1,5 @@
 package com.sprider.handler;
 
-import com.common.HttpReq;
-import com.util.HeaderUtil;
-
 /**
  * 1、http请求得到html文件
  * 2、正则得到需要的数据
@@ -12,11 +9,11 @@ public class AnjukeHandler implements SpriderInter{
 
     @Override
     public void grabHtml(){
-        try{
-            HttpReq.getReq(HeaderUtil.linyi_lanshan_2,HeaderUtil.anjuke());
+        /*try{
+            Http.getReq(WebHeader.linyi_lanshan_2,WebHeader.anjuke());
         }catch (Exception e){
             e.printStackTrace();
-        }
+        }*/
 
     }
 

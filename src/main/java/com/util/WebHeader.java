@@ -7,7 +7,7 @@ import java.util.Random;
 /**
  * Created by work on 2018/8/23.
  */
-public class HeaderUtil {
+public class WebHeader {
     static Map<String,String> map = new HashMap<String,String>();
 
 
@@ -45,6 +45,8 @@ public class HeaderUtil {
         map.put("user-agent", userAgent[new Random().nextInt(userAgent.length)]);
         return map;
     }
+
+
 
     public static String[] userAgent = {
             /*Chrome*/

@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.sprider.mapper.ProxyIpMapper" >
+<mapper namespace="com.sprider.mapping.ProxyIpMapper" >
 
     <insert id="insertList" parameterType="java.util.List">
         insert into proxy_ip (ip,port,type,addr,res_time,last_time) values
         <foreach collection="list" item="item" separator=",">
             (#{item.ip},#{item.port},#{item.type},#{item.addr},#{item.resTime},#{item.lastTime})
         </foreach>
+    </insert>
+
+    <insert id="insert" parameterType="com.sprider.pojo.ProxyIp">
+        insert into proxy_ip (ip,port,type,addr,res_time,last_time) values
+            (#{ip},#{port},#{type},#{addr},#{resTime},#{lastTime})
     </insert>
 
 </mapper>

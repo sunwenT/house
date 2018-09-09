@@ -1,13 +1,15 @@
 package com.sprider.handler;
 
 /**
- * 1、http请求得到html文件
- * 2、正则得到需要的数据
- * 3、将数据存入数据库
+ * 1、定时并发执行
+ * 2、先使用自己的ip爬取，如果会被封使用代理ip
+ * 3、四大直辖市和临沂市
+ * 4、多网站
+ * 5、对接小程序和朋友圈
+ * 6、所有县区
  */
-public class AnjukeHandler implements SpriderInter{
+public class AnjukeHandler{
 
-    @Override
     public void grabHtml(){
         /*try{
             Http.getReq(WebHeader.linyi_lanshan_2,WebHeader.anjuke());

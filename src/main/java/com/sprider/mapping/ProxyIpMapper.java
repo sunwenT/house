@@ -1,4 +1,4 @@
-package com.sprider.mapper;
+package com.sprider.mapping;
 
 import com.sprider.pojo.ProxyIp;
 
@@ -9,4 +9,5 @@ import java.util.List;
  */
 public interface ProxyIpMapper {
     void insertList(List<ProxyIp> proxyIps);
+    void insert(ProxyIp proxyIp);
 }

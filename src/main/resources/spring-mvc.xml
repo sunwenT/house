@@ -9,11 +9,6 @@
                         http://www.springframework.org/schema/context/spring-context-3.1.xsd
                         http://www.springframework.org/schema/mvc
                         http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
-    <!-- 自动扫描该包，使SpringMVC认为包下用了@controller注解的类是控制器 -->
-    <!--<context:component-scan base-package="com.zsd.base" >
-        &lt;!&ndash;<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />&ndash;&gt;
-        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
-    </context:component-scan>-->
     <!--避免IE执行AJAX时，返回JSON出现下载文件 -->
     <mvc:annotation-driven />
     <bean id="mappingJacksonHttpMessageConverter"
@@ -59,5 +54,7 @@
             <bean class="com.zsd.base.interceptor.AppInterceptor"></bean>
         </mvc:interceptor>
     </mvc:interceptors>-->
+
+    <!--<bean id="startHandler" class="com.sprider.handler.StartHandler"></bean>-->
 
 </beans>

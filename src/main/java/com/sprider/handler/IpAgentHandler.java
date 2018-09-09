@@ -1,6 +1,6 @@
 package com.sprider.handler;
 
-import com.sprider.mapper.ProxyIpMapper;
+import com.sprider.mapping.ProxyIpMapper;
 import com.sprider.pojo.ProxyIp;
 import com.util.Constant;
 import com.util.Common;
@@ -10,6 +10,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
 import javax.annotation.Resource;
 import java.net.*;
@@ -21,34 +22,35 @@ import java.util.List;
  * Created by work on 2018/8/23.
  */
 @Component
-public class IpAgentHandler implements Runnable{
+public class IpAgentHandler{
 
     @Resource
     private ProxyIpMapper proxyIpMapper;
 
-    private String url = "";
+    private String url = WebHeader.KUAI_AGENT+1;
+
+    public IpAgentHandler(){};
 
     public IpAgentHandler(String url) {
         this.url = url;
     }
 
 
-    @Override
+    /*@Override
     public void run() {
         grabHtml();
 
-    }
+    }*/
 
     /**
      * 抓取页面
      */
-    public void grabHtml() {
-        String Content = Common.getReqToHtml(url, WebHeader.ipAgent());
-        anaHtml(Content);
+    public String grabHtml() {
+        return Common.getReqToHtml(url, WebHeader.ipAgent());
     }
 
     /**
-     * 解析页面
+     * 解析页面得到对象集合
      * 得到ip，port和验证后的延迟时间
      * @param Content
      */
@@ -71,13 +73,17 @@ public class IpAgentHandler implements Runnable{
                     port = Integer.valueOf(td.text());
                 }
                 if (td.attr("data-title").equalsIgnoreCase("位置")) {
+
                     addr = td.text();
                 }
                 if (td.attr("data-title").equalsIgnoreCase("类型")) {
-                    type = td.text().contentEquals("高匿")?1:(td.text().contentEquals("透明")?2:3);
+                    type = td.text().contentEquals("高匿") ? 1 : (td.text().contentEquals("透明") ? 2 : 3);
                 }
+            }
                 //验证ip和port
-                int delayTime = verifyIp(ip,port);
+                System.out.println("正在验证IP:"+ip+" ...");
+                //int delayTime = verifyIp(ip,port);
+                int delayTime = 1;
                 /*将验证通过的ip和port输出*/
                 if (delayTime != -1) {
                     ProxyIp proxyIp = new ProxyIp();
@@ -89,16 +95,11 @@ public class IpAgentHandler implements Runnable{
                     proxyIp.setLastTime(new Date());
                     proxyIps.add(proxyIp);
                 }
-            }
         }
         return proxyIps;
     }
 
-    /**
-     * 验证ip的有效性
-     * 返回响应时间，-1则代表ip不可用
-     * @param ip
-     */
+    /*验证ip的有效性,返回响应时间，-1则代表ip不可用*/
     public int verifyIp(String ip,int port){
         if (!Common.verifyIp(ip)) {
             return -1;
@@ -113,7 +114,7 @@ public class IpAgentHandler implements Runnable{
         }
         return -1;
     }
-
+    /*验证ip是否代理可用，并返回延时时间*/
     public int verifyIpConn(String ip,int port){
         try {
             URL url = new URL(Constant.IP_AGENT_URL);
@@ -122,6 +123,7 @@ public class IpAgentHandler implements Runnable{
             Proxy proxy = new Proxy(Proxy.Type.HTTP, addr); // http 代理
             URLConnection conn = url.openConnection(proxy);
             long stime = System.currentTimeMillis();
+            conn.setConnectTimeout(20000);
             conn.connect();
             return Integer.valueOf((System.currentTimeMillis() - stime)+"");
         } catch (Exception e) {
@@ -136,17 +138,37 @@ public class IpAgentHandler implements Runnable{
         if (proxyIps == null || proxyIps.isEmpty()) {
             return;
         }
-        proxyIpMapper.insertList(proxyIps);
-
-
+        try {
+            proxyIpMapper.insertList(proxyIps);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public static void main(String[] args) {
-       /* ExecutorService executorService = Executors.newFixedThreadPool(3);
+    /**
+     * 持久化数据
+     */
+    public void persistDataTest(ProxyIp proxyIp) {
+        try {
+            proxyIpMapper.insert(proxyIp);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args){
+        /*ExecutorService executorService = Executors.newFixedThreadPool(3);
         for(int i=1;i<=1;i++) {
             executorService.execute(new IpAgentHandler(WebHeader.KUAI_AGENT+i));
         }
         executorService.shutdown();*/
+
+
+
+
+
+
+
 
 
 

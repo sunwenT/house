@@ -69,4 +69,17 @@ public class ProxyIp {
     public void setLastTime(Date lastTime) {
         this.lastTime = lastTime;
     }
+
+    @Override
+    public String toString() {
+        return "ProxyIp{" +
+                "id=" + id +
+                ", ip='" + ip + '\'' +
+                ", port='" + port + '\'' +
+                ", type=" + type +
+                ", addr='" + addr + '\'' +
+                ", resTime=" + resTime +
+                ", lastTime=" + lastTime +
+                '}';
+    }
 }
